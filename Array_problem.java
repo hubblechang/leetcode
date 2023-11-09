@@ -428,6 +428,28 @@ public class Array_problem {
     }
 
 
+    static int[] dailyTemperatures(int[] temperatures) {
+        int[] res = new int[temperatures.length];
+        HashMap<Integer, Integer> map = new HashMap<>();
+        map.put(0, temperatures[0]);
+        for (int idx = 1; idx < temperatures.length; idx++) {
+            int cur_temp = temperatures[idx];
+            List<Integer> rem = new ArrayList<>();
+            for (Integer i: map.keySet()) {
+                if(cur_temp > temperatures[i]){
+                    res[i] = idx - i;
+                    rem.add(i);
+                }
+            }
+            for (Integer i:rem) {
+                map.remove(i);
+            }
+            map.put(idx, temperatures[idx]);
+        }
+        return res;
+    }
+
+
     public static void main(String args[]){
         int[] nums1 = {1,2,2,1};
         int[] nums2 = {2,2};
@@ -478,5 +500,7 @@ public class Array_problem {
         System.out.println(maxPower(new String("aabbbbbccccdddddddeffffffggghhhhhiiiiijjjkkkkkllllmmmmmnnnnnoopppqrrrrsssttttuuuuvvvvwwwwwwwxxxxxyyyzzzzzzzz")));
 
         System.out.println(maxArea(5,4,new int[]{3,1}, new int[]{1}));
+
+        System.out.println(dailyTemperatures(new int[]{73,74,75,71,69,72,76,73}));
     }
 }
