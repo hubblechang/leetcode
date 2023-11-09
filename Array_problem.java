@@ -428,6 +428,104 @@ public class Array_problem {
     }
 
 
+    static int[] dailyTemperatures(int[] temperatures) {
+        /*int[] res = new int[temperatures.length];
+        HashMap<Integer, Integer> map = new HashMap<>();
+        map.put(0, temperatures[0]);
+        for (int idx = 1; idx < temperatures.length; idx++) {
+            int cur_temp = temperatures[idx];
+            List<Integer> rem = new ArrayList<>();
+            for (Integer i: map.keySet()) {
+                if(cur_temp > temperatures[i]){
+                    res[i] = idx - i;
+                    rem.add(i);
+                }
+            }
+            for (Integer i:rem) {
+                map.remove(i);
+            }
+            map.put(idx, temperatures[idx]);
+        }
+        return res;*/
+        int length = temperatures.length;
+        int[] ans = new int[length];
+        Deque<Integer> stack = new ArrayDeque<>();
+        for (int i = 0; i < length; i++) {
+            int temperature = temperatures[i];
+            while (!stack.isEmpty() && temperature > temperatures[stack.peek()]) {
+                int prevIndex = stack.pop();
+                ans[prevIndex] = i - prevIndex;
+            }
+            stack.push(i);
+        }
+        return ans;
+    }
+
+
+    static int[] topKFrequent(int[] nums, int k) {
+        HashMap<Integer,Integer> map = new HashMap<>();
+        for (int idx = 0; idx < nums.length; idx++) {
+            map.put(nums[idx], map.getOrDefault(nums[idx], 0)+1);
+        }
+        PriorityQueue<int[]> pq = new PriorityQueue<>((pair1,pair2)->pair1[1]-pair2[1]);
+        for(Map.Entry<Integer,Integer> entry:map.entrySet()){
+            if(pq.size()<k){
+                pq.add(new int[]{entry.getKey(),entry.getValue()});
+            }else{
+                if(entry.getValue()>pq.peek()[1]){
+                    pq.poll();
+                    pq.add(new int[]{entry.getKey(),entry.getValue()});
+                }
+            }
+        }
+        int[] ans = new int[k];
+        for(int i=k-1;i>=0;i--){
+            ans[i] = pq.poll()[0];
+        }
+        return ans;
+
+    }
+
+    static int[] successfulPairs(int[] spells, int[] potions, long success) {
+        Arrays.sort(potions);
+        int[] sorted_spells = Arrays.copyOf(spells, spells.length);
+        Arrays.sort(sorted_spells);
+        HashMap<Integer, Integer> map = new HashMap<>();
+        int[]  res = new int[spells.length];
+        int cur_start = potions.length - 1;
+        for (int idx = 0; idx < spells.length; idx++) {
+            int p = cur_start;
+            for(; p>=0 && (long) potions[p] * sorted_spells[idx] >= success; p--){}
+            cur_start = p;
+            map.put(sorted_spells[idx], potions.length - p - 1);
+        }
+        for (int idx = 0; idx < res.length; idx++) {
+            res[idx] = map.get(spells[idx]);
+        }
+        return res;
+    }
+
+    class NumArray {
+        int[] num_array;
+
+        public NumArray(int[] nums) {
+            num_array = Arrays.copyOf(nums, nums.length);
+        }
+        public void update(int index, int val) {
+            num_array[index] = val;
+
+        }
+
+        public int sumRange(int left, int right) {
+            int sum = 0;
+            for(int idx = left; idx <= right; idx++){
+                sum += num_array[idx];
+            }
+            return sum;
+        }
+    }
+
+
     public static void main(String args[]){
         int[] nums1 = {1,2,2,1};
         int[] nums2 = {2,2};
@@ -478,5 +576,9 @@ public class Array_problem {
         System.out.println(maxPower(new String("aabbbbbccccdddddddeffffffggghhhhhiiiiijjjkkkkkllllmmmmmnnnnnoopppqrrrrsssttttuuuuvvvvwwwwwwwxxxxxyyyzzzzzzzz")));
 
         System.out.println(maxArea(5,4,new int[]{3,1}, new int[]{1}));
+
+        System.out.println(dailyTemperatures(new int[]{73,74,75,71,69,72,76,73}));
+
+        successfulPairs(new int[]{3,1,2}, new int[]{8,5,8}, 16);
     }
 }

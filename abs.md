@@ -16,6 +16,22 @@ while (!deque.isEmpty()) {
 ```
 return (int) ((long)max_sub_width * max_sub_height * 1L % div);
 ```
+
+4. Comparator比较器
+
+**Java默认是升序**
+```agsl
+< return -1
+= return 0
+> return 1
+```
+如果想要降序，返回相反的
+```agsl
+< return 1
+= return 0
+> return -1
+```
+
 ## 数组
 
 ```
