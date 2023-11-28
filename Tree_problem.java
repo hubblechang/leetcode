@@ -1,4 +1,5 @@
 import java.util.LinkedList;
+import java.util.List;
 import java.util.Queue;
 
 // Definition for a Node.
@@ -22,6 +23,7 @@ class Node {
     }
 };
 
+
 class Solution2{
     public Node connect(Node root) {
         Node iter = new Node();
@@ -43,6 +45,22 @@ class Solution2{
             }
         }while(!next.isEmpty());
         return root;
+    }
+
+    public void traversal(TreeNode cur, List<Integer> res) {
+        if(cur == null){
+            return;
+        }
+        res.add(cur.val);
+        traversal(cur.left, res);
+        traversal(cur.right, res);
+
+    }
+
+    public List<Integer> preorderTraversal(TreeNode root) {
+        List<Integer> res = new LinkedList<>();
+        traversal(root, res);
+        return res;
     }
 
 }
