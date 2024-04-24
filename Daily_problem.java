@@ -213,6 +213,21 @@ class Solution3 {
 //        Arrays.sort;
 //
 //    }
+    public static void map_queue(){
+        PriorityQueue<Map.Entry<Integer, Integer>> priorityQueue = new PriorityQueue<>(
+                (e1, e2) -> e2.getValue() - e1.getValue());
+        PriorityQueue<int[]> Queue = new PriorityQueue<>(
+                (e1, e2) -> e2[1] - e1[1]);
+        for (int i = 0; i < 5; i++) {
+            priorityQueue.add(Map.entry(i,6-i));
+            Queue.add(new int[]{i, 6-i});
+        }
+        while (!priorityQueue.isEmpty()){
+            System.out.println(priorityQueue.poll().getValue());
+            System.out.println(Queue.poll()[1]);
+        }
+
+    }
 
 
 }
@@ -237,5 +252,6 @@ public class Daily_problem {
 
         System.out.println(Solution3.restoreIpAddresses("99999999999"));
         Solution3.split_string(new String("yuytrewert0"), 4);
+        Solution3.map_queue();
     }
 }

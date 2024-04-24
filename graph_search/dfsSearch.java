@@ -1,55 +1,44 @@
 package graph_search;
 
-import java.util.LinkedList;
-import java.util.Queue;
-
 public class dfsSearch {
+    // DFS
+
     int[][] dir = {
-        {0, 1}, {1, 0}, {0, -1}, {-1, 0}
+        {0, 1}, //right
+        {1, 0}, //down
+        {0, -1}, //left
+        {-1, 0} //up
     };
-
-    int count;
     boolean[][] visited;
-
+    int count;
     public int maxAreaOfIsland(int[][] grid) {
         int res = 0;
         visited = new boolean[grid.length][grid[0].length];
-
         for(int i = 0; i < grid.length; i++){
             for(int j = 0; j < grid[0].length; j++){
                 if(!visited[i][j] && grid[i][j] == 1){
                     count = 0;
-                    bfs(grid, i, j);
+                    dfs(grid, i, j);
                     res = Math.max(res, count);
                 }
             }
         }
         return res;
     }
-    private void bfs(int[][] grid, int x, int y){
-        Queue<Integer> que = new LinkedList<>();
-        que.offer(x);
-        que.offer(y);
+    private void dfs(int[][] grid, int x, int y){
+        if(visited[x][y] || grid[x][y] == 0)
+            return;
+
         visited[x][y] = true;
         count++;
 
-        while(!que.isEmpty()){
-            int currX = que.poll();
-            int currY = que.poll();
+        for(int i = 0; i < 4; i++){
+            int nextX = x + dir[i][0];
+            int nextY = y + dir[i][1];
 
-            for(int i = 0; i < 4; i++){
-                int nextX = currX + dir[i][0];
-                int nextY = currY + dir[i][1];
-
-                if(nextX < 0 || nextY < 0 || nextX >= grid.length || nextY >= grid[0].length)
-                    continue;
-                if(!visited[nextX][nextY] && grid[nextX][nextY] == 1){
-                    que.offer(nextX);
-                    que.offer(nextY);
-                    visited[nextX][nextY] = true;
-                    count++;
-                }
-            }
+            if(nextX < 0 || nextY < 0 || nextX >= grid.length || nextY >= grid[0].length)
+                continue;
+            dfs(grid, nextX, nextY);
         }
     }
 
@@ -58,6 +47,7 @@ public class dfsSearch {
         int[][] a = new int[][]{{0,0,1,1},{0,0,1,1},{0,0,1,1},{0,0,1,1}};
         s.maxAreaOfIsland(a);
         int[][] b = new int[][]{};
+
 
     }
 }

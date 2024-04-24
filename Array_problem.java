@@ -523,6 +523,12 @@ public class Array_problem {
             }
             return sum;
         }
+
+//        public LinkedList<Integer> union_list(LinkedList<Integer>[] lists){
+//            PriorityQueue<Map.Entry<Integer, Integer>> priorityQueue = new PriorityQueue<>(
+//                    (e1, e2) -> e1.getValue() - e2.getValue());
+//            return null;
+//        }
     }
 
 

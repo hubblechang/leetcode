@@ -456,7 +456,108 @@ class Solution2{
         }
     }
 
+    public static int count = 0;
+    public static boolean isLeaf(TreeNode node){
+        if(node.left == null && node.right ==null){
+            return true;
+        }
+        return false;
+    }
+    public static int countScore(TreeNode root){
+        if(!isLeaf(root.left) && !isLeaf(root.right)){
+            return Math.max(countScore(root.left), countScore(root.right)) + 1;
+        } else if (isLeaf(root.left)) {
+            return countScore(root.right) + 1;
+        } else if (isLeaf(root.right)) {
+            return countScore(root.left) + 1;
+        }else {
+            return 0;
+        }
+    }
 
+    public TreeNode constructFull(int LAYER){
+        TreeNode root = new TreeNode();
+        Queue<TreeNode> cur_layer = new LinkedList<>();
+        Queue<TreeNode> next_layer = new LinkedList<>();
+        cur_layer.add(root);
+        for (int i = 0; i < LAYER; i++) {
+            while(!cur_layer.isEmpty()){
+                TreeNode node = cur_layer.poll();
+                node.left = new TreeNode();
+                node.right =new TreeNode();
+                next_layer.add(node.left);
+                next_layer.add(node.right);
+            }
+            cur_layer.addAll(next_layer);
+        }
+        dfs_value(root);
+
+        return root;
+    }
+
+    public int dfs_value(TreeNode root) {
+        if(root.left == null && root.right == null){
+            root.val = 1;
+        }else {
+            root.val = dfs_value(root.left) + dfs_value(root.right);
+        } return root.val;
+    }
+
+    public static void layerTraversal(TreeNode root) {
+        if (root == null) {
+            return;
+        }
+
+        Queue<TreeNode> queue = new LinkedList<>();
+        queue.offer(root); // 将根节点加入队列
+
+        while (!queue.isEmpty()) {
+            TreeNode current = queue.poll(); // 从队列中移除并返回队列头部的元素
+            System.out.print(current.val + " "); // 访问当前节点的值
+
+            if (current.left != null) {
+                queue.offer(current.left); // 将当前节点的左子节点加入队列
+            }
+            if (current.right != null) {
+                queue.offer(current.right); // 将当前节点的右子节点加入队列
+            }
+        }
+    }
+    
+    public int maxLength(String s, int k){
+//        PriorityQueue<Integer> q = new PriorityQueue<>(new Comparator<Integer>() {
+//            @Override
+//            public int compare(Integer o1, Integer o2) {
+//                return o2 - o1;
+//            }
+//        });
+        PriorityQueue<Integer> q = new PriorityQueue<>(Collections.reverseOrder());
+        int start = 0;
+        while(start<s.length()){
+            if(s.charAt(start) == '0'){
+                start++;
+            }else {
+                int end = start+1;
+                while (end<s.length() && s.charAt(end) != '0'){
+                    end++;
+                }
+                q.add(end-start);
+                start = end;
+            }
+        }
+        for (int i = 0; i < k; i++) {
+            int a = q.poll();
+            if(a%2 == 1){
+                q.add((a-1) / 2);
+                q.add((a-1) / 2);
+            }
+            else {
+                q.add((a-1) / 2);
+                q.add((a-1) / 2 + 1);
+            }
+        }
+        return q.poll();
+    }
 
 }
 
@@ -482,6 +583,10 @@ public class Tree_problem {
         node_2.right = node_3;
         s.isBalanced(root);
 
+        TreeNode full = s.constructFull(3);
+        Solution2.layerTraversal(full);
+        System.out.println();
+        System.out.println(s.maxLength("000111111111000111011111111", 3));
     }
 
 }
