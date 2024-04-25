@@ -230,8 +230,7 @@ class Solution3 {
     }
 
 
-}
-
+}       /**/
 public class Daily_problem {
     public static void main(String args[]){
         SmallestInfiniteSet test = new SmallestInfiniteSet();
