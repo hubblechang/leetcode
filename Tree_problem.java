@@ -146,6 +146,43 @@ class Solution2{
         return res_list;
     }
 
+    public TreeNode construct_layer(int[] a){
+        TreeNode root = new TreeNode(a[0]);
+        Queue<TreeNode> q = new LinkedList<>();
+        q.add(root);
+        int idx = 1;
+        while(!q.isEmpty()){
+            TreeNode t = q.poll();
+            if(idx<a.length && a[idx]!=-1){
+                t.left = new TreeNode(a[idx]);
+                q.add(t.left);
+            }
+            idx++;
+            if(idx<a.length && a[idx]!=-1){
+                t.right = new TreeNode(a[idx]);
+                q.add(t.right);
+            }
+            idx++;
+        }
+        return root;
+    }
+
+    public String level_string(TreeNode root){
+        Queue<TreeNode> q = new LinkedList<>();
+        ArrayList<Integer> a = new ArrayList<>();
+        q.add(root);
+        while(!q.isEmpty()){
+            TreeNode t = q.poll();
+            a.add(t.val);
+            if(t.left != null){
+                q.add(t.left);
+            }
+            if (t.right != null){
+                q.add(t.right);
+            }
+        }
+        return a.toString();
+    }
 
     public List<Integer> rightSideView(TreeNode root) {
         /*小心树高不一致的情况*/
@@ -374,6 +411,32 @@ class Solution2{
         return res;
     }
 
+    boolean res = false;
+    public boolean hasPathSum(TreeNode root, int target){
+        if(root == null){
+            return res;
+        }
+        Queue<TreeNode> q = new LinkedList<>();
+        q.add(root);
+        while(!q.isEmpty()){
+            TreeNode t = q.poll();
+            int size = q.size();
+            if(t.left != null ){
+                t.left.val = t.left.val + t.val;
+                q.add(t.left);
+            }
+            if (t.right != null) {
+                t.right.val = t.right.val + t.val;
+                q.add(t.right);
+            }
+            if(t.left == null && t.right == null){
+                if(t.val == target){
+                    res = true;
+                }
+            }
+        }
+        return res;
+    }
 
     public List<String> binaryTreePaths(TreeNode root) {
         Queue<List<TreeNode>> paths = new LinkedList<>();
@@ -575,13 +638,15 @@ public class Tree_problem {
         node_3.right = node_5;
         s.levelOrder(root);
         Integer[] a = new Integer[]{1,2,2,3,3,null,null,4,4};
-        System.out.println(a);
+        System.out.println(Arrays.toString(a));
         root = new TreeNode(0);
         node_2 = new TreeNode(1);
         node_3 = new TreeNode(2);
         root.right = node_2;
         node_2.right = node_3;
         s.isBalanced(root);
+        TreeNode has_path = s.construct_layer(new int[]{5,4,8,11,-1,13,4,7,2,-1,-1,-1,1});
+        System.out.println(s.hasPathSum(has_path, 22));
 
         TreeNode full = s.constructFull(3);
         Solution2.layerTraversal(full);
